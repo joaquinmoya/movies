@@ -12,7 +12,7 @@ import MoviesList from './MoviesList'
 class MovieLibrary extends Component {
 
   static propTypes = {
-
+    movies: PropTypes.array.isRequired
   }
 
   componentDidMount() {
@@ -25,8 +25,8 @@ class MovieLibrary extends Component {
     return (
       <div className="MovieLibrary">
         <header className="ML-header">
-          <img src={logo} className="ML-logo" alt="logo" />
-          <h1 className="ML-title">Movies</h1>
+          <h1 className="ML-title">React Movies</h1>
+          <img src={logo} className="ML-logo" alt="Logo" />
         </header>
         <div className="ML-intro">
           { movies.length && <MoviesList movies={movies}/> }
