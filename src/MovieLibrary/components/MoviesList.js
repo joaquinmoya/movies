@@ -2,31 +2,53 @@ import React, { Component, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { X } from 'react-feather'
-
+import {fetchTopRatedMovies, fetchAscSortMovies, fetchDescSortMovies, fetchSortMoviesByRating} from '../store/actions'
 import TMDBImage from './TMDBImage'
 import './MoviesList.css'
+import {connect} from 'react-redux'
+import {getMovies} from '../store/selectors'
 
-export default class MoviesList extends PureComponent {
+
+class MoviesList extends PureComponent {
 
   static propTypes = {
     movies: PropTypes.array.isRequired
   }
 
   state = {
-    selectedMovie: null
+    selectedMovie: null,
+    sortingType: null
   }
 
-
+ 
   handleSelectMovie = item => this.setState({selectedMovie: item})
 
-  handleSortingChange = sortingType => console.log(sortingType)
+  handleSortingChange = sortingType => { 
+    this.setState({sortingType: sortingType})
+    if(sortingType === 'name_asc') {
+      const {fetchAscSortMovies} = this.props
+      fetchAscSortMovies()
+    }
+    if(sortingType === 'name_desc'){
+      const {fetchDescSortMovies} = this.props
+      fetchDescSortMovies()
+    }
+    if(sortingType === 'rating'){
+      const {fetchSortMoviesByRating} = this.props
+      fetchSortMoviesByRating()
+    }
+    if(sortingType === ''){
+      const {fetchTopRatedMovies} = this.props
+      fetchTopRatedMovies()
+    }
+   
+  }
 
   render() {
-
-  
+    
     const {movies} = this.props
     const {selectedMovie} = this.state
-
+    console.log(movies)
     return (
       <div className="movies-list">
         <div className="items">
@@ -112,4 +134,13 @@ class SortingOptions extends Component {
     )
   }
 }
+const mapDispatchToProps = {
+  fetchTopRatedMovies,
+  fetchAscSortMovies,
+  fetchDescSortMovies,
+  fetchSortMoviesByRating
+}
 
+export default connect(state => ({
+  movies: getMovies(state)
+}), mapDispatchToProps)(MoviesList)
