@@ -2,7 +2,7 @@ import React, { Component, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { X } from 'react-feather'
-import {fetchTopRatedMovies, fetchAscSortMovies, fetchDescSortMovies, fetchSortMoviesByRating} from '../store/actions'
+import {getMoviesAction, fetchAscSortMovies, fetchDescSortMovies, fetchSortMoviesByRating} from '../store/actions'
 import TMDBImage from './TMDBImage'
 import './MoviesList.css'
 import {connect} from 'react-redux'
@@ -38,8 +38,8 @@ class MoviesList extends PureComponent {
       fetchSortMoviesByRating()
     }
     if(sortingType === ''){
-      const {fetchTopRatedMovies} = this.props
-      fetchTopRatedMovies()
+      const {getMoviesAction} = this.props
+      getMoviesAction()
     }
    
   }
@@ -135,7 +135,7 @@ class SortingOptions extends Component {
   }
 }
 const mapDispatchToProps = {
-  fetchTopRatedMovies,
+  getMoviesAction,
   fetchAscSortMovies,
   fetchDescSortMovies,
   fetchSortMoviesByRating

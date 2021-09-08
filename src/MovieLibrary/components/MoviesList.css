@@ -175,15 +175,15 @@
   }
 
   .expanded-movie-item  > .description {
-    width: 70%;
-    height: 60%;
+    width: 80%;
+    height: 50%;
     flex-direction: row;
     overflow-y: hidden;
   }
 
   .description-image{
     height: 100%;
-    width: 120rem;
+    width: 80rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {fetchTopRatedMovies} from '../store/actions'
+import {getMoviesAction} from '../store/actions'
 
 
 import logo from './logo.svg'
@@ -16,8 +16,8 @@ class MovieLibrary extends Component {
   }
 
   componentDidMount() {
-    const {fetchTopRatedMovies} = this.props
-    fetchTopRatedMovies()
+    const {getMoviesAction} = this.props
+    getMoviesAction()
   }
 
   render() {
@@ -38,4 +38,4 @@ class MovieLibrary extends Component {
 
 export default connect(state => ({
   movies: getMovies(state)
-}), {fetchTopRatedMovies})(MovieLibrary)
+}), {getMoviesAction})(MovieLibrary)
