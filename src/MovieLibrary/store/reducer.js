@@ -1,7 +1,8 @@
-import {FETCH_MOVIES, FETCH_SORT_MOVIES_ASC, FETCH_SORT_MOVIES_DESC, FETCH_SORT_MOVIES_BY_RATING} from '../../actionTypes'
+import {FETCH_MOVIES, FETCH_SORT_MOVIES_ASC, FETCH_SORT_MOVIES_DESC, FETCH_SORT_MOVIES_BY_RATING, FETCH_SORT_MOVIES_BY_TOP_RATED} from '../../actionTypes'
 
 const initialState = {
-  movies: []
+  movies: [],
+  page: null
 }
 
 export default function movies(state = initialState, action) {
@@ -11,8 +12,14 @@ export default function movies(state = initialState, action) {
     case FETCH_MOVIES:
       return {
         ...state,
-        movies: payload
+        movies: state.movies.concat(payload.moviesArray),
+        page: payload.page
       }
+    case FETCH_SORT_MOVIES_BY_TOP_RATED:
+      return{
+        ...state,
+        movies: state.movies.sort((a,b) => (b.vote_average-a.vote_average))
+      }  
     case FETCH_SORT_MOVIES_ASC:
         return {
           ...state,

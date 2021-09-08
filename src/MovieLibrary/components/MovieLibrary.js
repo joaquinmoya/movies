@@ -6,7 +6,7 @@ import {getMoviesAction} from '../store/actions'
 
 import logo from './logo.svg'
 import './MovieLibrary.css'
-import {getMovies} from '../store/selectors'
+import {getMovies, getPage} from '../store/selectors'
 import MoviesList from './MoviesList'
 
 class MovieLibrary extends Component {
@@ -17,7 +17,7 @@ class MovieLibrary extends Component {
 
   componentDidMount() {
     const {getMoviesAction} = this.props
-    getMoviesAction()
+    getMoviesAction(1)
   }
 
   render() {
@@ -37,5 +37,6 @@ class MovieLibrary extends Component {
 }
 
 export default connect(state => ({
-  movies: getMovies(state)
+  movies: getMovies(state),
+  page: getPage(state)
 }), {getMoviesAction})(MovieLibrary)

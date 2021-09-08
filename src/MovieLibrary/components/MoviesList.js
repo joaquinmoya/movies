@@ -2,17 +2,19 @@ import React, { Component, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { X } from 'react-feather'
-import {getMoviesAction, fetchAscSortMovies, fetchDescSortMovies, fetchSortMoviesByRating} from '../store/actions'
+import {getMoviesAction, fetchAscSortMovies, fetchDescSortMovies, fetchSortMoviesByRating, fetchSortMoviesByTopRated} from '../store/actions'
 import TMDBImage from './TMDBImage'
 import './MoviesList.css'
 import {connect} from 'react-redux'
-import {getMovies} from '../store/selectors'
+import {getMovies, getPage} from '../store/selectors'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 
 class MoviesList extends PureComponent {
 
   static propTypes = {
-    movies: PropTypes.array.isRequired
+    movies: PropTypes.array.isRequired,
+    page: PropTypes.number.isRequired
   }
 
   state = {
@@ -38,29 +40,35 @@ class MoviesList extends PureComponent {
       fetchSortMoviesByRating()
     }
     if(sortingType === ''){
-      const {getMoviesAction} = this.props
-      getMoviesAction()
+      const {fetchSortMoviesByTopRated} = this.props
+      fetchSortMoviesByTopRated()
     }
    
   }
 
   render() {
-    
-    const {movies} = this.props
+    const {page, movies, getMoviesAction} = this.props
     const {selectedMovie} = this.state
-    console.log(movies)
     return (
       <div className="movies-list">
-        <div className="items">
+        <div  >
           <div className="sort-section">
             <span>Sort by</span>
             <SortingOptions onChange={this.handleSortingChange}/>
           </div>
+          <InfiniteScroll
+          className="items"
+          dataLength={movies.length}
+          next={()=> setTimeout(()=>{getMoviesAction(page)},1500)}
+          hasMore={true}
+          loader={<div className='spinner'></div>}>
           {
+            
             movies.map(movie =>
               <MovieListItem key={movie.id} movie={movie} isSelected={selectedMovie===movie} onSelect={this.handleSelectMovie}/>
             )
           }
+          </InfiniteScroll>
         </div>
         {
           selectedMovie && (
@@ -138,9 +146,11 @@ const mapDispatchToProps = {
   getMoviesAction,
   fetchAscSortMovies,
   fetchDescSortMovies,
-  fetchSortMoviesByRating
+  fetchSortMoviesByRating,
+  fetchSortMoviesByTopRated
 }
 
 export default connect(state => ({
-  movies: getMovies(state)
+  movies: getMovies(state),
+  page: getPage(state)
 }), mapDispatchToProps)(MoviesList)
